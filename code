@@ -16,3 +16,21 @@ with DAG('nineleaps_processing',start_date=datetime(2023,5,18),
     )
 
     print_hello1 >> function_call
+
+
+
+from airflow import DAG
+from airflow.operators.bash_operator import BashOperator
+from datetime import datetime
+
+dag = DAG(
+    dag_id='upload_csv',
+    start_date=datetime(2023, 5, 1),  # Specify the start date
+    schedule_interval=None              # Set the schedule interval as per your requirements
+)
+
+upload_task = BashOperator(
+    task_id='upload_csv_task',
+    bash_command='cp /path/to/local/file.csv /path/to/destination/file.csv',
+    dag=dag
+)
