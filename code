@@ -1,0 +1,18 @@
+from airflow import DAG
+from datetime import datetime
+from airflow.operators.bash_operator import BashOperator
+from airflow.operators.python_operator import PythonOperator
+with DAG('nineleaps_processing',start_date=datetime(2023,5,18),
+         schedule_interval='@daily',catchup=False) as dag:
+    def karthick():
+        return "call from function"
+    print_hello1= BashOperator(
+        task_id="print_hello1",
+        bash_command='echo "Hello 1"'
+    )
+    function_call=PythonOperator(
+        task_id="function_call",
+        python_callable=karthick
+    )
+
+    print_hello1 >> function_call
